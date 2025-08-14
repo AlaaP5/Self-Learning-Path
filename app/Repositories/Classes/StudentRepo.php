@@ -14,7 +14,7 @@ class StudentRepo implements StudentRepoInterface
     public function __construct(protected StudentAnswer $studentAnswerModel, protected Question $questionModel) {}
 
 
-    public function getWeakConcepts(int $studentId, ?int $examId = null): array
+    public function getWeakConcepts(int $studentId, $examId): array
     {
         $query = $this->studentAnswerModel->query()
             ->select([
@@ -29,9 +29,7 @@ class StudentRepo implements StudentRepoInterface
             ->where('student_answers.student_id', $studentId)
             ->groupBy('concepts.id', 'concepts.name');
 
-        if ($examId) {
-            $query->where('student_answers.exam_id', $examId);
-        }
+        $query->where('student_answers.exam_id', $examId);
 
         return $query->having('wrong_answers', '>=', 2)
             ->get()
