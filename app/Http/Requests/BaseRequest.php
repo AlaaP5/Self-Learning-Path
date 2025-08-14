@@ -6,6 +6,7 @@ use App\Responses\ApiResponse;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
 
 class BaseRequest extends FormRequest
 {
@@ -38,7 +39,13 @@ class BaseRequest extends FormRequest
     /**
      * Automatically merge authenticated user_id into request.
      */
-    protected function prepareForValidation(){}
+    protected function prepareForValidation(){
+        if (auth()->check()) {
+            $this->merge([
+                'user_id' => Auth::id(),
+            ]);
+        }
+    }
 
 
     /**
