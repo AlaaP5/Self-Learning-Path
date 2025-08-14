@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('learning_paths', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('exam_id')->constrained('exams');
             $table->foreignId('concept_id')->constrained()->onDelete('cascade');
             $table->unsignedInteger('recommended_order');
             $table->boolean('is_completed')->default(false);

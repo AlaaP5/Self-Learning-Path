@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('student_answers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained('users');
+            $table->foreignId('exam_id')->constrained('exams');
             $table->foreignId('question_id')->constrained('questions');
             $table->enum('selected_option', ['A', 'B', 'C', 'D']);
             $table->boolean('is_correct');

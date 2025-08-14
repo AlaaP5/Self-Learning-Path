@@ -12,7 +12,7 @@ class StudentAnswer extends Model
 
     protected $table = 'student_answers';
 
-    protected $fillable = ['student_id', 'question_id', 'selected_option', 'is_correct'];
+    protected $fillable = ['student_id', 'exam_id', 'question_id', 'selected_option', 'is_correct'];
 
     public function student(): BelongsTo
     {
