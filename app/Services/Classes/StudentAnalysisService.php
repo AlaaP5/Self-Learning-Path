@@ -26,27 +26,36 @@ class StudentAnalysisService implements StudentAnalysisServiceInterface
             collect($weakConcepts)->pluck('id')->toArray()
         );
 
-        $learningPath = $this->expertSystem->analyze($weakConcepts, $prerequisites);
+        $learningPaths = $this->expertSystem->analyze($weakConcepts, $prerequisites);
 
-        $concepts = $this->conceptRepo->getConceptsWithResources(
-            collect($learningPath)->pluck('concept_id')->toArray()
-        );
+        $allConceptIds = collect($learningPaths)->pluck('concept_id')->unique()->toArray();
+        $concepts = $this->conceptRepo->getConceptsWithResources($allConceptIds);
+
+        $groupedPaths = collect($learningPaths)->groupBy('path_id');
+
+        $mappedPaths = $groupedPaths->map(function ($pathGroup) use ($concepts) {
+            return [
+                'path_id' => $pathGroup->first()['path_id'],
+                'concepts' => $this->mapLearningPath($pathGroup->toArray(), $concepts)
+            ];
+        });
 
         return ApiResponse::success([
             'weak_concepts' => $weakConcepts,
-            'learning_path' => $this->mapLearningPath($learningPath, $concepts)
+            'learning_paths' => $mappedPaths->values()->toArray()
         ], __('shared.success'));
     }
 
-    protected function mapLearningPath(array $learningPath, $concepts): array
+    protected function mapLearningPath(array $learningPaths, $concepts): array
     {
-        return collect($learningPath)->map(function ($item) use ($concepts) {
+        return collect($learningPaths)->map(function ($item) use ($concepts) {
             $concept = $concepts[$item['concept_id']];
             return [
                 'concept_id' => $item['concept_id'],
                 'concept_name' => $concept->name,
                 'priority' => $item['priority'],
-                'resources' => $concept->resources
+                'resources' => $concept->resources,
+                'is_prerequisite' => $item['priority'] === 1
             ];
         })->toArray();
     }
