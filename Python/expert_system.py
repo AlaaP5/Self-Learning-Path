@@ -56,14 +56,26 @@ def analyze_student_weaknesses(weak_concepts, prerequisites):
     engine.run()
 
     learning_path = []
+    path_counter = 1
+    current_path_id = None
+
     for fact in engine.facts:
         if isinstance(fact, LearningAdvice):
+            if fact['priority'] == 1:
+                current_path_id = f"path_{path_counter}"
+                path_counter += 1
+
+            if not current_path_id:
+                current_path_id = f"path_{path_counter}"
+                path_counter += 1
+
             learning_path.append({
+                'path_id': current_path_id,
                 'concept_id': fact['concept_id'],
                 'priority': fact['priority']
             })
 
-    return sorted(learning_path, key=lambda x: x['priority'])
+    return sorted(learning_path, key=lambda x: (x['path_id'], x['priority']))
 
 
 if __name__ == "__main__":
