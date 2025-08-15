@@ -12,7 +12,7 @@ class LearningPath extends Model
 
     protected $table = 'learning_paths';
 
-    protected $fillable = ['student_id', 'exam_id', 'concept_id', 'recommended_order', 'is_completed'];
+    protected $fillable = ['path_id','student_id', 'exam_id', 'concept_id', 'recommended_order', 'is_completed'];
 
     public function student(): BelongsTo
     {
