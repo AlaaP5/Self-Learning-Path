@@ -13,7 +13,7 @@ class ExpertSystemService implements ExpertSystemServiceInterface
     {
         $process = new Process([
             'python3',
-            base_path('expert_system.py'),
+            base_path('Python/expert_system.py'),
             json_encode($weakConcepts),
             json_encode($prerequisites)
         ]);
