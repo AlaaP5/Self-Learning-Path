@@ -42,7 +42,7 @@ class BaseRequest extends FormRequest
     protected function prepareForValidation(){
         if (auth()->check()) {
             $this->merge([
-                'user_id' => Auth::id(),
+                'student_id' => Auth::id(),
             ]);
         }
     }
