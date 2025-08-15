@@ -1,6 +1,5 @@
 <?php
 
-// app/Repositories/Classes/StudentRepo.php
 namespace App\Repositories\Classes;
 
 use App\Models\Question;
@@ -27,9 +26,10 @@ class StudentRepo implements StudentRepoInterface
             ->join('questions', 'student_answers.question_id', '=', 'questions.id')
             ->join('concepts', 'questions.concept_id', '=', 'concepts.id')
             ->where('student_answers.student_id', $studentId)
+            ->where('student_answers.exam_id', $examId)
             ->groupBy('concepts.id', 'concepts.name');
 
-        $query->where('student_answers.exam_id', $examId);
+
 
         return $query->having('wrong_answers', '>=', 2)
             ->get()
