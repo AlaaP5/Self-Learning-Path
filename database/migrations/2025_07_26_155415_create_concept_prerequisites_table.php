@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('concept_prerequisites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('concept_id')->constrained()->onDelete('cascade');
+            $table->foreignId('concept_id')->constrained('concepts')->onDelete('cascade');
             $table->foreignId('prerequisite_concept_id')->references('id')->on('concepts')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
