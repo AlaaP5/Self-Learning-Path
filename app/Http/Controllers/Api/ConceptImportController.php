@@ -48,7 +48,7 @@ $fullPath = str_replace('\\', '/', $fullPath);
         $sheet = $spreadsheet->getActiveSheet();
         $rows = $sheet->toArray(null, true, true, true); // مفاتيح A,B,C...
 
-        
+
 
         // صف العناوين (الهيدر)
         $headerRow = array_shift($rows); // أول صف
@@ -153,7 +153,7 @@ $fullPath = str_replace('\\', '/', $fullPath);
         }
     }
 
-   
+
     private function buildHeaderMap(array $headerRow): array
     {
         $norm = fn($v) => $this->normalizeHeader((string)$v);
@@ -169,7 +169,7 @@ $fullPath = str_replace('\\', '/', $fullPath);
         return $colByKey;
     }
 
-    
+
     private function normalizeHeader(string $value): ?string
     {
         $v = mb_strtolower(trim($value));
@@ -198,13 +198,13 @@ $fullPath = str_replace('\\', '/', $fullPath);
     $g = trim(mb_strtolower($grade));
 
     return match($g) {
-        'العاشر','عاشر','10','الصف العاشر','الصف10'   
+        'العاشر','عاشر','10','الصف العاشر','الصف10'
             => 'first',
 
-        'الحادي عشر','حادي عشر','11','الصف الحادي عشر','الصف11' 
+        'الحادي عشر','حادي عشر','11','الصف الحادي عشر','الصف11'
             => 'second',
 
-        'الثالث الثانوي','الثالث','12','الصف الثالث الثانوي','الصف12' 
+        'الثالث الثانوي','الثالث','12','الصف الثالث الثانوي','الصف12'
             => 'third',
 
         default => $grade, // اتركه كما هو (قد يكون أصلاً 'first' أو 'second' أو 'third')
