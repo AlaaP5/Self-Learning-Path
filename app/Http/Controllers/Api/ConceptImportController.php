@@ -153,12 +153,9 @@ $fullPath = str_replace('\\', '/', $fullPath);
         }
     }
 
-    /**
-     * يبني خريطة الأعمدة من الهيدر (يدعم العربية والإنجليزية).
-     */
+   
     private function buildHeaderMap(array $headerRow): array
     {
-        // نطبّع القيم (إزالة فراغات وتحويل لحروف صغيرة)
         $norm = fn($v) => $this->normalizeHeader((string)$v);
 
         $colByKey = []; // key => columnLetter
@@ -172,19 +169,17 @@ $fullPath = str_replace('\\', '/', $fullPath);
         return $colByKey;
     }
 
-    /**
-     * توحيد أسماء الأعمدة (يدعم مسميات عربية شائعة).
-     */
+    
     private function normalizeHeader(string $value): ?string
     {
         $v = mb_strtolower(trim($value));
 
         $aliases = [
-            'subject'        => ['subject','المادة','مادة'],
-            'grade'          => ['grade','الصف','المرحلة'],
-            'semester'       => ['semester','الفصل','الفصل الدراسي','الفصل الدراسى','ترم'],
-            'concept'        => ['concept','المفهوم','عنوان','العنوان'],
-            'prerequisites'  => ['prerequisites','prerequisite','المتطلبات','متطلبات','سوابق','المستبقات'],
+            'subject'        => ['subject'],
+            'grade'          => ['grade'],
+            'semester'       => ['semester'],
+            'concept'        => ['concept'],
+            'prerequisites'  => ['prerequisites'],
         ];
 
         foreach ($aliases as $key => $names) {
