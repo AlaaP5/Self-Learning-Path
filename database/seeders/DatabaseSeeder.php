@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             GradeSeeder::class,
             SubjectSeeder::class,
+            UserSeeder::class
             // ConceptSeeder::class
         ]);
     }

@@ -13,46 +13,46 @@ class SubjectSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-   public function run(): void
-{
-    
-    $grade10 = $this->gradeRepo->findByName('first');   // العاشر
-    $grade11 = $this->gradeRepo->findByName('second');  // الحادي عشر
-    $grade12 = $this->gradeRepo->findByName('third');   // الثالث الثانوي
+    public function run(): void
+    {
 
-    $grades = [
-        $grade10,
-        $grade11,
-        $grade12,
-    ];
+        $grade10 = $this->gradeRepo->findByName('first');   // العاشر
+        $grade11 = $this->gradeRepo->findByName('second');  // الحادي عشر
+        $grade12 = $this->gradeRepo->findByName('third');   // الثالث الثانوي
 
-    $semesters = ['first', 'second']; // فصول
+        $grades = [
+            $grade10,
+            $grade11,
+            $grade12,
+        ];
 
-    
-    $subjectNames = [
-        'الرياضيات',
-        'الفيزياء',
-        'الكيمياء',
-        'اللغة العربية',
-        'اللغة الإنجليزية',
-        'العلوم والاحياء',
-        'اللغة الفرنسية ',
-        'الفلسفة',
-        'التاريخ',
-        'الجغرافيا',
+        $semesters = ['first', 'second']; // فصول
 
-    ];
 
-    foreach ($subjectNames as $name) {
-        foreach ($grades as $grade) {
-            foreach ($semesters as $sem) {
-                $this->subjectModel->create([
-                    'name'      => $name,
-                    'grade_id'  => $grade->id,
-                    'semester'  => $sem
-                ]);
+        $subjectNames = [
+            'الرياضيات',
+            'الفيزياء',
+            'الكيمياء',
+            'اللغة العربية',
+            'اللغة الإنجليزية',
+            'العلوم والاحياء',
+            'اللغة الفرنسية ',
+            'الفلسفة',
+            'التاريخ',
+            'الجغرافيا',
+
+        ];
+
+        foreach ($subjectNames as $name) {
+            foreach ($grades as $grade) {
+                foreach ($semesters as $sem) {
+                    $this->subjectModel->create([
+                        'name'      => $name,
+                        'grade_id'  => $grade->id,
+                        'semester'  => $sem
+                    ]);
+                }
             }
         }
     }
-}}
-
+}
