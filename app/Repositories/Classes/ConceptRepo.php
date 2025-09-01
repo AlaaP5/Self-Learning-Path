@@ -11,7 +11,7 @@ class ConceptRepo implements ConceptRepoInterface
 {
     public function __construct(protected Concept $conceptModel, protected ConceptPrerequisite $conceptPrerequisiteModel) {}
 
-    function findByName(string $name): Concept
+    function findByName(string $name): ?Concept
     {
         return $this->conceptModel->where('name', $name)->first();
     }

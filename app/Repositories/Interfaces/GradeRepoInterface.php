@@ -6,5 +6,5 @@ use App\Models\Grade;
 
 interface GradeRepoInterface
 {
-    function findByName(string $name): Grade;
+    function findByName(string $name): ?Grade;
 }

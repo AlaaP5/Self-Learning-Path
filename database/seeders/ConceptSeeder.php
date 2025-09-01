@@ -122,7 +122,7 @@ class ConceptSeeder extends Seeder
             [
                 'name' => 'المصفوفات',
                 'subject_id' => $subject_2_1->id,
-                'prerequisites' => ['']
+                'prerequisites' => []
             ],
             [
                 'name' => 'الاشتقاق الضمني',

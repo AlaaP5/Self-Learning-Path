@@ -10,7 +10,7 @@ class SubjectRepo implements SubjectRepoInterface
 {
     public function __construct(protected Subject $subjectModel) {}
 
-    function findSubject(string $name, int $grade_id, string $semester): Subject
+    function findSubject(string $name, int $grade_id, string $semester): ?Subject
     {
         return $this->subjectModel->where('name', $name)
             ->where('grade_id', $grade_id)
