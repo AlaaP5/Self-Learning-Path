@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->foreignId('grade_id')->constrained('grades');
+            $table->foreignId('grade_id')->nullable()->constrained('grades');
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
