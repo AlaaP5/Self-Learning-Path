@@ -2,22 +2,28 @@
 
 namespace App\Providers;
 
+use App\Repositories\Classes\AuthRepo;
 use App\Repositories\Classes\ConceptRepo;
 use App\Repositories\Classes\ExamRepo;
 use App\Repositories\Classes\GradeRepo;
 use App\Repositories\Classes\StudentRepo;
 use App\Repositories\Classes\SubjectRepo;
+use App\Repositories\Interfaces\AuthRepoInterface;
 use App\Repositories\Interfaces\ConceptRepoInterface;
 use App\Repositories\Interfaces\ExamRepoInterface;
 use App\Repositories\Interfaces\GradeRepoInterface;
 use App\Repositories\Interfaces\StudentRepoInterface;
 use App\Repositories\Interfaces\SubjectRepoInterface;
+use App\Services\Classes\AuthService;
 use App\Services\Classes\ExamService;
 use App\Services\Classes\ExpertSystemService;
 use App\Services\Classes\StudentAnalysisService;
+use App\Services\Classes\SubjectService;
+use App\Services\Interfaces\AuthServiceInterface;
 use App\Services\Interfaces\ExamServiceInterface;
 use App\Services\Interfaces\ExpertSystemServiceInterface;
 use App\Services\Interfaces\StudentAnalysisServiceInterface;
+use App\Services\Interfaces\SubjectServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 
@@ -51,6 +57,15 @@ class AppServiceProvider extends ServiceProvider
 
         // Exam Repo
         $this->app->bind(ExamRepoInterface::class, ExamRepo::class);
+
+        // Auth Service
+        $this->app->bind(AuthServiceInterface::class, AuthService::class);
+
+        // Auth Repo
+        $this->app->bind(AuthRepoInterface::class, AuthRepo::class);
+
+        // Subject Service
+        $this->app->bind(SubjectServiceInterface::class, SubjectService::class);
     }
 
     /**
