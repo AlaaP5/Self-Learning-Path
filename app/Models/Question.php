@@ -22,6 +22,11 @@ class Question extends Model
     {
         return $this->belongsTo(Concept::class);
     }
+    
+    public function exams()
+    {
+        return $this->belongsToMany(Exam::class, 'exam_question');
+    }
 
     public function studentAnswers(): HasMany
     {

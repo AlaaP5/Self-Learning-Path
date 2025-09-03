@@ -16,4 +16,12 @@ class ExamRepo implements ExamRepoInterface
             ->where('is_active', true)
             ->first();
     }
+
+    public function getQuesOfExam(int $subjectId)
+    {
+        $exam= $this->examModel->where('subject_id', $subjectId)->first();
+        return $questions = $exam?->questions;
+    }
+
+
 }

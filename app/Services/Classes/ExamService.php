@@ -6,6 +6,7 @@ use App\Repositories\Interfaces\ExamRepoInterface;
 use App\Repositories\Interfaces\StudentRepoInterface;
 use App\Responses\ApiResponse;
 use App\Services\Interfaces\ExamServiceInterface;
+use Exception;
 
 
 class ExamService implements ExamServiceInterface
@@ -23,5 +24,16 @@ class ExamService implements ExamServiceInterface
         $savedAnswers = $this->studentRepo->saveAnswers($studentId, $examId, $answers);
 
         return ApiResponse::success($savedAnswers, __('shared.success'));
+    }
+
+    public function getQuestion(int $studentId): ApiResponse
+    {
+       try {
+        $Ques = $this->examRepo->getQuesOfExam($studentId);
+
+            return ApiResponse::success($Ques, __('shared.success'));
+        } catch(Exception $e) {
+            return ApiResponse::error(__('shared.general_error'));
+        }
     }
 }
