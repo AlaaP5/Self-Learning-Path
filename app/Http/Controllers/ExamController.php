@@ -18,7 +18,7 @@ class ExamController extends Controller
         return $this->examService->submitExam($validated['student_id'], $validated['exam_id'], $validated['answers'])->toJsonResponse();
     }
 
-     public function getQuesOfExam(Request $request): JsonResponse
+    public function getQuesOfExam(Request $request): JsonResponse
     {
         return $this->examService->getQuestion($request['id'])->toJsonResponse();
     }
