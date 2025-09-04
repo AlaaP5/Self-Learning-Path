@@ -17,9 +17,9 @@ class ExamRepo implements ExamRepoInterface
             ->first();
     }
 
-    public function getQuesOfExam(int $subjectId)
+    public function getQuesOfExam(int $examId)
     {
-        $exam= $this->examModel->where('subject_id', $subjectId)->first();
+        $exam= $this->examModel->where('id', $examId)->first();
         return $questions = $exam?->questions;
     }
 

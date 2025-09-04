@@ -26,10 +26,10 @@ class ExamService implements ExamServiceInterface
         return ApiResponse::success($savedAnswers, __('shared.success'));
     }
 
-    public function getQuestion(int $studentId): ApiResponse
+    public function getQuestion(int $examId): ApiResponse
     {
        try {
-        $Ques = $this->examRepo->getQuesOfExam($studentId);
+        $Ques = $this->examRepo->getQuesOfExam($examId);
 
             return ApiResponse::success($Ques, __('shared.success'));
         } catch(Exception $e) {
