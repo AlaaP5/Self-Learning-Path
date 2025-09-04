@@ -7,6 +7,7 @@ use App\Repositories\Classes\ConceptRepo;
 use App\Repositories\Classes\ExamRepo;
 use App\Repositories\Classes\GradeRepo;
 use App\Repositories\Classes\ResourceRepo;
+use App\Repositories\Classes\StudentAnswerRepo;
 use App\Repositories\Classes\StudentRepo;
 use App\Repositories\Classes\SubjectRepo;
 use App\Repositories\Interfaces\AuthRepoInterface;
@@ -14,6 +15,7 @@ use App\Repositories\Interfaces\ConceptRepoInterface;
 use App\Repositories\Interfaces\ExamRepoInterface;
 use App\Repositories\Interfaces\GradeRepoInterface;
 use App\Repositories\Interfaces\ResourceRepoInterface;
+use App\Repositories\Interfaces\StudentAnswerRepoInterface;
 use App\Repositories\Interfaces\StudentRepoInterface;
 use App\Repositories\Interfaces\SubjectRepoInterface;
 use App\Services\Classes\AuthService;
@@ -21,12 +23,14 @@ use App\Services\Classes\ExamService;
 use App\Services\Classes\ExpertSystemService;
 use App\Services\Classes\ResourceService;
 use App\Services\Classes\StudentAnalysisService;
+use App\Services\Classes\StudentAnswerService;
 use App\Services\Classes\SubjectService;
 use App\Services\Interfaces\AuthServiceInterface;
 use App\Services\Interfaces\ExamServiceInterface;
 use App\Services\Interfaces\ExpertSystemServiceInterface;
 use App\Services\Interfaces\ResourceServiceInterface;
 use App\Services\Interfaces\StudentAnalysisServiceInterface;
+use App\Services\Interfaces\StudentAnswerServiceInterface;
 use App\Services\Interfaces\SubjectServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -76,6 +80,13 @@ class AppServiceProvider extends ServiceProvider
 
         //Resource Service
         $this-> app->bind(ResourceServiceInterface::class, ResourceService::class);
+        
+        // Resource Repo
+        $this->app->bind(StudentAnswerRepoInterface::class, StudentAnswerRepo::class);
+
+        //Resource Service
+        $this-> app->bind(StudentAnswerServiceInterface::class, StudentAnswerService::class);
+    
     }
 
     /**
