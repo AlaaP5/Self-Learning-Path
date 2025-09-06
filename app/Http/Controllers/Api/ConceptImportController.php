@@ -32,29 +32,26 @@ class ConceptImportController extends Controller
 
    $uploadDir = storage_path('app/imports');
 if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0777, true); // أنشئه إذا مش موجود
+    mkdir($uploadDir, 0777, true);
 }
 
 $fullPath = $uploadDir . '/concepts.xlsx';
 $request->file('file')->move($uploadDir, 'concepts.xlsx');
 
-// ✨ تأكد
+
 $fullPath = str_replace('\\', '/', $fullPath);
 
-        // اقرأ الملف (Excel/CSV) بترميز سليم
         $reader = IOFactory::createReaderForFile($fullPath);
         $reader->setReadDataOnly(true);
         $spreadsheet = $reader->load($fullPath);
         $sheet = $spreadsheet->getActiveSheet();
-        $rows = $sheet->toArray(null, true, true, true); // مفاتيح A,B,C...
+        $rows = $sheet->toArray(null, true, true, true);
 
 
 
-        // صف العناوين (الهيدر)
-        $headerRow = array_shift($rows); // أول صف
+        $headerRow = array_shift($rows);
         $map = $this->buildHeaderMap($headerRow);
 
-        // تأكيد وجود الأعمدة المطلوبة
         foreach (['subject','grade','semester','concept','prerequisites'] as $reqKey) {
             if (!isset($map[$reqKey])) {
                     if (file_exists($fullPath)) {
@@ -66,12 +63,10 @@ $fullPath = str_replace('\\', '/', $fullPath);
 
         DB::beginTransaction();
         try {
-            // تمريرة 1: إنشاء جميع المفاهيم (مثل السيدر اليدوي)
-            // نجمع أيضًا البيانات الأصلية للتمرير الثاني
             $buffer = [];
 
             foreach ($rows as $idx => $row) {
-                $rowNumber = $idx + 2; // لأن الهيدر هو الصف 1
+                $rowNumber = $idx + 2;
                 $subjectName = trim((string)($row[$map['subject']] ?? ''));
                 $gradeRaw    = trim((string)($row[$map['grade']] ?? ''));
                 $semRaw      = trim((string)($row[$map['semester']] ?? ''));
@@ -82,11 +77,11 @@ $fullPath = str_replace('\\', '/', $fullPath);
                     throw new \RuntimeException("سطر {$rowNumber}: اسم المفهوم فارغ.");
                 }
 
-                $gradeKey = $this->normalizeGrade($gradeRaw);        // 'first' | 'second' أو مدخل كما هو
-                $semKey   = $this->normalizeSemester($semRaw);       // 'first' | 'second'
+                $gradeKey = $this->normalizeGrade($gradeRaw);
+                $semKey   = $this->normalizeSemester($semRaw);
 
                 $grade = $this->gradeRepo->findByName($gradeKey);
-                // dd($grade);
+
                 if (!$grade) {
                     throw new \RuntimeException("سطر {$rowNumber}: لم يتم العثور على صف دراسي: {$gradeRaw} (mapped: {$gradeKey}).");
                 }
@@ -96,7 +91,6 @@ $fullPath = str_replace('\\', '/', $fullPath);
                     throw new \RuntimeException("سطر {$rowNumber}: لم يتم العثور على مادة '{$subjectName}' للصف '{$gradeKey}' والفصل '{$semKey}'.");
                 }
 
-                // مثل السيدر: ننشئ مباشرة (من دون تخطي)
                 $concept = $this->conceptModel->create([
                     'name'       => $conceptName,
                     'subject_id' => $subject->id
@@ -109,7 +103,7 @@ $fullPath = str_replace('\\', '/', $fullPath);
                 ];
             }
 
-            // تمريرة 2: إنشاء العلاقات prerequisites (بالاسم فقط مثل السيدر اليدوي)
+
             foreach ($buffer as $item) {
                 $concept   = $item['concept'];
                 $rowNumber = $item['rowNumber'];
@@ -117,16 +111,12 @@ $fullPath = str_replace('\\', '/', $fullPath);
                 foreach ($this->splitPrereqs($item['prereqs']) as $prName) {
                     $pr = $this->conceptRepo->findByName($prName);
                     if ($pr) {
-                        // نتجنب التكرار
+
                         $this->conceptPrerequisiteModel->firstOrCreate([
                             'concept_id'              => $concept->id,
                             'prerequisite_concept_id' => $pr->id
                         ]);
                     } else {
-                        // محاكاة سلوك السيدر اليدوي: يتجاهل فقط إذا ما لقاها؟ (السيدر اليدوي كان يتحقق ثم ينشئ)
-                        // سنطبّق نفس الشيء: إذا غير موجود، لا ننشئ علاقة ولا نفشل.
-                        // لو بدك نفشل، استبدل بالسطر التالي:
-                        // throw new \RuntimeException("سطر {$rowNumber}: لم يتم العثور على prerequisite بالاسم '{$prName}'.");
                     }
                 }
             }
@@ -158,7 +148,7 @@ $fullPath = str_replace('\\', '/', $fullPath);
     {
         $norm = fn($v) => $this->normalizeHeader((string)$v);
 
-        $colByKey = []; // key => columnLetter
+        $colByKey = [];
         foreach ($headerRow as $colLetter => $title) {
             $t = $norm($title);
             if (!$t) continue;
@@ -190,9 +180,6 @@ $fullPath = str_replace('\\', '/', $fullPath);
         return null;
     }
 
-    /**
-     * توحيد الصف (العاشر/الحادي عشر → first/second) أو تركه كما هو إن كان أصلاً مُعتمدًا.
-     */
     private function normalizeGrade(string $grade): string
 {
     $g = trim(mb_strtolower($grade));
@@ -207,14 +194,11 @@ $fullPath = str_replace('\\', '/', $fullPath);
         'الثالث الثانوي','الثالث','12','الصف الثالث الثانوي','الصف12'
             => 'third',
 
-        default => $grade, // اتركه كما هو (قد يكون أصلاً 'first' أو 'second' أو 'third')
+        default => $grade,
     };
 }
 
 
-    /**
-     * توحيد الفصل (الأول/الثاني → first/second).
-     */
     private function normalizeSemester(string $sem): string
     {
         $s = trim(mb_strtolower($sem));
@@ -222,20 +206,16 @@ $fullPath = str_replace('\\', '/', $fullPath);
             'الاول','الأول','اول','1','الفصل الاول','الفصل الأول'   => 'first',
             'الثاني','٢','2','الفصل الثاني'                          => 'second',
             'first','second'                                          => $s,
-            default                                                   => $sem, // اتركه كما هو إن كان متوافقًا مع الداتا
+            default                                                   => $sem,
         };
     }
 
-    /**
-     * تقسيم المتطلبات، يدعم عدة فواصل (| , ; ،)
-     */
     private function splitPrereqs(?string $cell): array
     {
         if (!$cell) return [];
         $cell = trim($cell);
         if ($cell === '') return [];
 
-        // استبدال جميع الفواصل المحتملة بـ |
         $unified = str_replace(
             [',','؛','؛ ','؛',';','،','/','\\'],
             '|',

@@ -1,6 +1,5 @@
 <?php
 
-// app/Models/Question.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +21,7 @@ class Question extends Model
     {
         return $this->belongsTo(Concept::class);
     }
-    
+
     public function exams()
     {
         return $this->belongsToMany(Exam::class, 'exam_question');

@@ -14,7 +14,7 @@ class ResourceSeeder extends Seeder
     {
         DB::table('resources')->insert([
             [
-                'subject_id' => 1, // لازم يكون موجود subject_id بالجدول subjects
+                'subject_id' => 1,
                 'title' => 'Introduction to Laravel',
                 'type' => 'pdf',
                 'url' => 'https://example.com/laravel-intro.pdf',

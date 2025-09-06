@@ -16,9 +16,9 @@ class SubjectSeeder extends Seeder
     public function run(): void
     {
 
-        $grade10 = $this->gradeRepo->findByName('first');   // العاشر
-        $grade11 = $this->gradeRepo->findByName('second');  // الحادي عشر
-        $grade12 = $this->gradeRepo->findByName('third');   // الثالث الثانوي
+        $grade10 = $this->gradeRepo->findByName('first');
+        $grade11 = $this->gradeRepo->findByName('second');
+        $grade12 = $this->gradeRepo->findByName('third');
 
         $grades = [
             $grade10,
@@ -26,7 +26,7 @@ class SubjectSeeder extends Seeder
             $grade12,
         ];
 
-        $semesters = ['first', 'second']; // فصول
+        $semesters = ['first', 'second'];
 
 
         $subjectNames = [

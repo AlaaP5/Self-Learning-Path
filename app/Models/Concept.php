@@ -1,6 +1,5 @@
 <?php
 
-// app/Models/Concept.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
