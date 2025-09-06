@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('learning_paths', function (Blueprint $table) {
             $table->id();
-            $table->string('path_id');
+            $table->tinyInteger('path_id');
             $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('exam_id')->constrained('exams');
             $table->foreignId('concept_id')->constrained()->onDelete('cascade');
             $table->unsignedInteger('recommended_order');
-            $table->boolean('is_completed')->default(false);
+            $table->tinyInteger('is_completed')->default(0);
+            $table->index(['student_id', 'exam_id', 'is_completed']);
             $table->softDeletes();
             $table->timestamps();
         });
