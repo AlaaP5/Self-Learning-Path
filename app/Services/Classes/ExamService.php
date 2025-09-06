@@ -15,24 +15,35 @@ class ExamService implements ExamServiceInterface
 
     public function submitExam(int $studentId, int $examId, array $answers): ApiResponse
     {
-        $exam = $this->examRepo->findActiveExam($examId);
+            $exam = $this->examRepo->findActiveExam($examId);
 
-        if(empty($exam)) {
-            return ApiResponse::error(__('shared.general_error'));
-        }
+            if(empty($exam)) {
+                return ApiResponse::error(__('shared.general_error'));
+            }
 
-        $savedAnswers = $this->studentRepo->saveAnswers($studentId, $examId, $answers);
+            $savedAnswers = $this->studentRepo->saveAnswers($studentId, $examId, $answers);
 
-        return ApiResponse::success($savedAnswers, __('shared.success'));
+            return ApiResponse::success($savedAnswers, __('shared.success'));
     }
 
     public function getQuestion(int $examId): ApiResponse
     {
-       try {
-        $Ques = $this->examRepo->getQuesOfExam($examId);
+        try {
+            $Ques = $this->examRepo->getQuesOfExam($examId);
 
             return ApiResponse::success($Ques, __('shared.success'));
-        } catch(Exception $e) {
+        } catch (Exception $e) {
+            return ApiResponse::error(__('shared.general_error'));
+        }
+    }
+
+    public function getExams(): ApiResponse
+    {
+        try {
+            $exams = $this->examRepo->getExams();
+
+            return ApiResponse::success($exams, __('shared.success'));
+        } catch (Exception $e) {
             return ApiResponse::error(__('shared.general_error'));
         }
     }
