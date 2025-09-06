@@ -20,6 +20,11 @@ class ExamController extends Controller
 
     public function getQuesOfExam(Request $request): JsonResponse
     {
-        return $this->examService->getQuestion($request['id'])->toJsonResponse();
+        return $this->examService->getQuestion($request['exam_id'])->toJsonResponse();
+    }
+
+    public function getExams(): JsonResponse
+    {
+        return $this->examService->getExams()->toJsonResponse();
     }
 }
