@@ -12,7 +12,7 @@ class ExpertSystemService implements ExpertSystemServiceInterface
     public function analyze(array $weakConcepts, array $prerequisites): array
     {
         $process = new Process([
-            'python3',
+            'python',
             base_path('Python/expert_system.py'),
             json_encode($weakConcepts),
             json_encode($prerequisites)
