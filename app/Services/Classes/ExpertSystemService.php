@@ -3,11 +3,14 @@
 namespace App\Services\Classes;
 
 use App\DTOs\LearningPathDto;
+use App\DTOs\ResultDto;
 use App\Mail\SendLearningPathMail;
 use App\Repositories\Interfaces\AuthRepoInterface;
 use App\Repositories\Interfaces\ConceptRepoInterface;
 use App\Repositories\Interfaces\ExamRepoInterface;
 use App\Repositories\Interfaces\LearningPathRepoInterface;
+use App\Repositories\Interfaces\ResultRepoInterface;
+use App\Repositories\Interfaces\StudentAnswerRepoInterface;
 use App\Repositories\Interfaces\StudentRepoInterface;
 use App\Services\Interfaces\ExpertSystemServiceInterface;
 use Illuminate\Support\Collection;
@@ -22,7 +25,9 @@ class ExpertSystemService implements ExpertSystemServiceInterface
         protected ExamRepoInterface $examRepo,
         protected StudentRepoInterface $studentRepo,
         protected ConceptRepoInterface $conceptRepo,
-        protected AuthRepoInterface $authRepo
+        protected AuthRepoInterface $authRepo,
+        protected ResultRepoInterface $resultRepo,
+        protected StudentAnswerRepoInterface $studentAnswerRepo
     ) {}
 
 
@@ -105,5 +110,9 @@ class ExpertSystemService implements ExpertSystemServiceInterface
         Mail::to($student->email)->send(new SendLearningPathMail($message));
 
         $this->learningPathRepo->updateStatus($examId, $studentId);
+
+        $mark = $this->studentAnswerRepo->calculateMark($examId, $studentId);
+
+        $this->resultRepo->addResult(new ResultDto($message, $mark, $studentId, $examId));
     }
 }
