@@ -20,4 +20,10 @@ class AuthRepo implements AuthRepoInterface
         }
         return null;
     }
+
+    public function findStudent(int $studentId): User
+    {
+        return $this->userModel->where('id', $studentId)
+            ->first();
+    }
 }
