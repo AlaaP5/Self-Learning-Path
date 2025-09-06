@@ -11,4 +11,5 @@ interface ConceptRepoInterface
     function getAll(): Collection;
     function getPrerequisitesForConcepts(array $conceptIds): array;
     function getConceptsWithResources(array $conceptIds);
+    function getConceptsBySubjectId(int $subjectId): array;
 }

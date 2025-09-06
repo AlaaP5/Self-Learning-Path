@@ -41,4 +41,12 @@ class ConceptRepo implements ConceptRepoInterface
             ->get()
             ->keyBy('id');
     }
+
+    public function getConceptsBySubjectId(int $subjectId): array
+    {
+        return $this->conceptModel
+            ->where('subject_id', $subjectId)
+            ->pluck('id')
+            ->toArray();
+    }
 }
