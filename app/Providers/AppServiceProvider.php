@@ -6,6 +6,7 @@ use App\Repositories\Classes\AuthRepo;
 use App\Repositories\Classes\ConceptRepo;
 use App\Repositories\Classes\ExamRepo;
 use App\Repositories\Classes\GradeRepo;
+use App\Repositories\Classes\LearningPathRepo;
 use App\Repositories\Classes\ResourceRepo;
 use App\Repositories\Classes\StudentAnswerRepo;
 use App\Repositories\Classes\StudentRepo;
@@ -14,6 +15,7 @@ use App\Repositories\Interfaces\AuthRepoInterface;
 use App\Repositories\Interfaces\ConceptRepoInterface;
 use App\Repositories\Interfaces\ExamRepoInterface;
 use App\Repositories\Interfaces\GradeRepoInterface;
+use App\Repositories\Interfaces\LearningPathRepoInterface;
 use App\Repositories\Interfaces\ResourceRepoInterface;
 use App\Repositories\Interfaces\StudentAnswerRepoInterface;
 use App\Repositories\Interfaces\StudentRepoInterface;
@@ -80,13 +82,15 @@ class AppServiceProvider extends ServiceProvider
 
         //Resource Service
         $this-> app->bind(ResourceServiceInterface::class, ResourceService::class);
-        
+
         // Resource Repo
         $this->app->bind(StudentAnswerRepoInterface::class, StudentAnswerRepo::class);
 
-        //Resource Service
+        // Resource Service
         $this-> app->bind(StudentAnswerServiceInterface::class, StudentAnswerService::class);
-    
+
+        // Learning Path Repo
+        $this-> app->bind(LearningPathRepoInterface::class, LearningPathRepo::class);
     }
 
     /**
