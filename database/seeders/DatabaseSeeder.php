@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder
             SubjectSeeder::class,
             UserSeeder::class,
             ResourceSeeder::class,
-            QuestionSeeder::class,
+            // QuestionSeeder::class,
             ExamSeeder::class,
-            ExamQuestionSeeder::class,
+            // ExamQuestionSeeder::class,
             // ConceptSeeder::class
             
         ]);
