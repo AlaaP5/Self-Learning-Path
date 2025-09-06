@@ -1,8 +1,11 @@
 from experta import *
+import numbers
+
 
 class WeakConcept(Fact):
     concept_id = Field(int, mandatory=True)
-    error_rate = Field(float, mandatory=True)
+    error_rate = Field(numbers.Real, mandatory=True)
+
 
 class ConceptPrerequisite(Fact):
     concept_id = Field(int, mandatory=True)
@@ -24,6 +27,7 @@ class StudentAnalysisEngine(KnowledgeEngine):
         )
     )
     def suggest_prerequisite(self, cid, req):
+        print(f"Rule triggered for cid={cid}, req={req}")
         self.declare(LearningAdvice(concept_id=req, priority=1))
         self.declare(LearningAdvice(concept_id=cid, priority=2))
 
@@ -42,9 +46,11 @@ def analyze_student_weaknesses(weak_concepts, prerequisites):
     engine.reset()
 
     for wc in weak_concepts:
+        error_rate_value = float(wc['error_rate'])   # 🔥 إجبار التحويل
+        print(f"Declaring WeakConcept with error_rate={error_rate_value}")  # debug
         engine.declare(WeakConcept(
-            concept_id=wc['id'],
-            error_rate=wc['error_rate']
+            concept_id=int(wc['id']),
+        error_rate=float(wc['error_rate'])  
         ))
 
     for pr in prerequisites:
@@ -59,7 +65,7 @@ def analyze_student_weaknesses(weak_concepts, prerequisites):
     path_counter = 1
     current_path_id = None
 
-    for fact in engine.facts:
+    for fid, fact in engine.facts.items():   # 👈 مش بس engine.facts
         if isinstance(fact, LearningAdvice):
             if fact['priority'] == 1:
                 current_path_id = f"path_{path_counter}"
@@ -74,6 +80,7 @@ def analyze_student_weaknesses(weak_concepts, prerequisites):
                 'concept_id': fact['concept_id'],
                 'priority': fact['priority']
             })
+
 
     return sorted(learning_path, key=lambda x: (x['path_id'], x['priority']))
 
