@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('exam_id')->constrained('exams');
             $table->foreignId('question_id')->constrained('questions');
             $table->enum('selected_option', ['A', 'B', 'C', 'D']);
-            $table->boolean('is_correct');
+            $table->boolean('is_correct')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

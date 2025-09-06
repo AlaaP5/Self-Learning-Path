@@ -11,7 +11,7 @@ class ExamSeeder extends Seeder
     {
         DB::table('exams')->insert([
             [
-                'subject_id' => 1, // لازم يكون موجود subject_id في جدول subjects
+                'subject_id' => 1,
                 'exam_date' => now()->addDays(7),
                 'is_active' => true,
                 'created_at' => now(),
