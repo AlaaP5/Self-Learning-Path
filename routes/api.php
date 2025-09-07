@@ -20,4 +20,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/exams/getQuestions', [ExamController::class, 'getQuesOfExam']);
     Route::post('/exams/getAll', [ExamController::class, 'getExams']);
     Route::post('/answers/submit', [StudentAnswerController::class, 'store']);
+    Route::post('/learningPaths/getAll', [ExamController::class, 'getLearningPaths']);
 });

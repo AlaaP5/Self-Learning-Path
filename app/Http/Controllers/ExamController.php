@@ -27,4 +27,9 @@ class ExamController extends Controller
     {
         return $this->examService->getExams()->toJsonResponse();
     }
+
+    public function getLearningPaths(): JsonResponse
+    {
+        return $this->examService->getLearningPaths()->toJsonResponse();
+    }
 }

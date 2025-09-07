@@ -3,15 +3,16 @@
 namespace App\Services\Classes;
 
 use App\Repositories\Interfaces\ExamRepoInterface;
+use App\Repositories\Interfaces\ResultRepoInterface;
 use App\Repositories\Interfaces\StudentRepoInterface;
 use App\Responses\ApiResponse;
 use App\Services\Interfaces\ExamServiceInterface;
 use Exception;
-
+use Illuminate\Support\Facades\Auth;
 
 class ExamService implements ExamServiceInterface
 {
-    public function __construct(protected ExamRepoInterface $examRepo, protected StudentRepoInterface $studentRepo) {}
+    public function __construct(protected ResultRepoInterface $resultRepo, protected ExamRepoInterface $examRepo, protected StudentRepoInterface $studentRepo) {}
 
     public function submitExam(int $studentId, int $examId, array $answers): ApiResponse
     {
@@ -43,6 +44,17 @@ class ExamService implements ExamServiceInterface
             $exams = $this->examRepo->getExams();
 
             return ApiResponse::success($exams, __('shared.success'));
+        } catch (Exception $e) {
+            return ApiResponse::error(__('shared.general_error'));
+        }
+    }
+
+    public function getLearningPaths(): ApiResponse
+    {
+        try {
+            $results = $this->resultRepo->getResults(Auth::id());
+
+            return ApiResponse::success($results, __('shared.success'));
         } catch (Exception $e) {
             return ApiResponse::error(__('shared.general_error'));
         }
